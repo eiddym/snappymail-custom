@@ -1,5 +1,5 @@
 /**
- * SnappyMail Custom Theme: Marabunta Dark Glass (Clean)
+ * SnappyMail Custom Theme: Marabunta Dark Glass
  */
 
 :root {
@@ -53,7 +53,7 @@
     --dialog-border-clr: rgba(255, 255, 255, 0.15);
 }
 
-/* FONDO PRINCIPAL DE LA PÁGINA */
+/* FONDO PRINCIPAL */
 html, body, #rl-app, #V-Login.LoginView {
     min-height: 100vh;
     background-color: #07141c !important;
@@ -64,7 +64,7 @@ html, body, #rl-app, #V-Login.LoginView {
     background-attachment: fixed !important;
 }
 
-/* MALLA DE FONDO SUBTIL */
+/* MALLA DE FONDO */
 #V-Login.LoginView::before {
     content: "";
     position: fixed;
@@ -77,7 +77,6 @@ html, body, #rl-app, #V-Login.LoginView {
     mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
 }
 
-/* CONTENEDOR PRINCIPAL DE LOGIN */
 #V-Login.LoginView {
     display: flex !important;
     flex-direction: column !important;
@@ -86,7 +85,7 @@ html, body, #rl-app, #V-Login.LoginView {
     padding: 35px 20px !important;
 }
 
-/* TÍTULO WEBMAIL MARABUNTA CON SUBRAYADO GOLD */
+/* TÍTULO WEBMAIL MARABUNTA */
 #V-Login .descWrapper,
 .LoginView .descWrapper {
     display: block !important;
@@ -112,7 +111,6 @@ html, body, #rl-app, #V-Login.LoginView {
     border-radius: 2px !important;
 }
 
-/* ALERTAS VACÍAS OCULTAS */
 #V-Login .alert[hidden],
 .LoginView .alert[hidden],
 #V-Login .alert:empty,
@@ -122,7 +120,7 @@ html, body, #rl-app, #V-Login.LoginView {
     padding: 0 !important;
 }
 
-/* TARJETA DE FORMULARIO GLASSMORPHISM (410PX) */
+/* TARJETA DE FORMULARIO (410PX) */
 #V-Login form,
 .LoginView form {
     width: 410px !important;
@@ -137,7 +135,7 @@ html, body, #rl-app, #V-Login.LoginView {
     box-sizing: border-box !important;
 }
 
-/* INPUTS ESPACIOSOS Y LIMPIOS */
+/* INPUTS ESPACIOSOS */
 #V-Login form input.input-block-level,
 .LoginView form input.input-block-level {
     width: 100% !important;
@@ -158,6 +156,15 @@ html, body, #rl-app, #V-Login.LoginView {
     padding-right: 50px !important;
 }
 
+/* FORZAR REVELACIÓN DE CARACTERES CUANDO TYPE ES TEXT */
+#V-Login form input[type="text"][name="Password"],
+.LoginView form input[type="text"][name="Password"],
+#V-Login form input[type="text"].show-password,
+.LoginView form input[type="text"].show-password {
+    -webkit-text-security: none !important;
+    text-security: none !important;
+}
+
 #V-Login form input.input-block-level:focus,
 .LoginView form input.input-block-level:focus {
     background: rgba(255, 255, 255, 0.14) !important;
@@ -171,7 +178,7 @@ html, body, #rl-app, #V-Login.LoginView {
     color: rgba(244, 239, 228, 0.5) !important;
 }
 
-/* POSICIONAMIENTO DEL OJITO 👁 DENTRO DEL CAMPO DE CONTRASEÑA */
+/* OJITO 👁 */
 .snappy-eye-toggle {
     position: absolute !important;
     right: 16px !important;
@@ -191,12 +198,11 @@ html, body, #rl-app, #V-Login.LoginView {
     transform: translateY(-50%) scale(1.1) !important;
 }
 
-/* OCULTAR CUALQUIER ÍCONO TRASLAPADO DE SNAPPYMAIL */
 #V-Login form .fontastic:not(.e-checkbox *):not(.language-button) {
     display: none !important;
 }
 
-/* BOTÓN ACCEDER COLOR TERRACOTA MARABUNTA (#a34b28 -> #8c3817) */
+/* BOTÓN ACCEDER TERRACOTA */
 #V-Login form button.buttonLogin,
 .LoginView form button.buttonLogin,
 html body #rl-app #V-Login form button.buttonLogin {
@@ -225,7 +231,6 @@ html body #rl-app #V-Login form button.buttonLogin {
     transform: translateY(-1px) !important;
 }
 
-/* ENLACES Y CHECKBOX */
 #V-Login form a, .LoginView form a {
     color: rgba(243, 234, 215, 0.75) !important;
     transition: color 0.2s !important;
@@ -237,36 +242,4 @@ html body #rl-app #V-Login form button.buttonLogin {
 
 #V-Login form .e-checkbox, .LoginView form .e-checkbox {
     color: rgba(244, 239, 228, 0.9) !important;
-}
-
-/* BOTONERA INTERNA Y TABLAS */
-.btn-toolbar {
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    padding: 8px 10px !important;
-    background: #0c1c28 !important;
-    border-bottom: 1px solid rgba(255,255,255,.06) !important;
-}
-
-.btn-toolbar .btn {
-    width: 34px !important;
-    height: 34px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    background: rgba(255,255,255,.04) !important;
-    color: #d7e0e6 !important;
-    border: 1px solid rgba(255,255,255,.08) !important;
-    border-radius: 9px !important;
-    box-shadow: none !important;
-    font-size: 15px !important;
-    line-height: 1 !important;
-}
-
-.btn-toolbar .btn:hover {
-    background: rgba(255,255,255,.1) !important;
-    color: #fff !important;
 }

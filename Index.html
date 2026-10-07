@@ -39,30 +39,41 @@
         {{BaseTemplates}}
         <script nonce="" type="text/javascript">{{BaseAppBootScript}}{{BaseLanguage}}</script>
         <script type="text/javascript">
-        document.addEventListener('click', function(e) {
+        function handleEyeToggle(e) {
             var target = e.target;
             var eye = target && target.closest ? target.closest('.snappy-eye-toggle') : null;
             if (eye) {
                 e.preventDefault();
                 e.stopPropagation();
-                var pwdInputs = document.getElementsByName('Password');
-                var pwdInput = (pwdInputs && pwdInputs.length > 0) ? pwdInputs[0] : document.querySelector('input[name="Password"], input[type="password"]');
+                var container = eye.closest('.controls') || eye.parentElement;
+                var pwdInput = container ? container.querySelector('input') : document.querySelector('input[name="Password"]');
                 if (pwdInput) {
-                    var isPassword = pwdInput.type === 'password' || pwdInput.getAttribute('type') === 'password';
+                    var currentType = pwdInput.getAttribute('type') || pwdInput.type;
+                    var isPassword = (currentType === 'password');
                     if (isPassword) {
                         pwdInput.type = 'text';
                         pwdInput.setAttribute('type', 'text');
+                        pwdInput.style.setProperty('-webkit-text-security', 'none', 'important');
+                        pwdInput.style.setProperty('text-security', 'none', 'important');
                         eye.style.color = '#ffffff';
                         eye.style.opacity = '1';
-                        eye.style.textShadow = '0 0 10px rgba(255,255,255,0.9)';
+                        eye.style.textShadow = '0 0 12px rgba(255,255,255,0.9)';
                     } else {
                         pwdInput.type = 'password';
                         pwdInput.setAttribute('type', 'password');
+                        pwdInput.style.setProperty('-webkit-text-security', 'disc', 'important');
+                        pwdInput.style.setProperty('text-security', 'disc', 'important');
                         eye.style.color = 'rgba(243, 234, 215, 0.65)';
                         eye.style.opacity = '0.7';
                         eye.style.textShadow = 'none';
                     }
                 }
+            }
+        }
+        document.addEventListener('click', handleEyeToggle, true);
+        document.addEventListener('pointerdown', function(e) {
+            if (e.target && e.target.closest && e.target.closest('.snappy-eye-toggle')) {
+                handleEyeToggle(e);
             }
         }, true);
         </script>
