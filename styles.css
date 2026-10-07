@@ -261,3 +261,23 @@ html body #rl-app #V-Login form button.buttonLogin {
 #V-Login form .e-checkbox, .LoginView form .e-checkbox {
     color: rgba(244, 239, 228, 0.9) !important;
 }
+
+
+/* EYE TOGGLE POSICIONADO DENTRO DEL CAMPO CONTRASEÑA */
+#V-Login .controls {
+  position: relative;
+}
+#V-Login .snappy-eye-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+  z-index: 2;
+  line-height: 1;
+  transition: opacity 0.2s ease;
+}
+#V-Login input[name="Password"] {
+  padding-right: 36px;
+}
