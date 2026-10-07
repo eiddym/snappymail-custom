@@ -1,0 +1,52 @@
+<div class="descWrapper" data-bind="visible: '' !== loadingDesc, text: loadingDesc"></div>
+        <a href="#" class="close" data-bind="click: hideError">×</a>
+        <span data-bind="text: submitError"></span>
+        <p data-bind="visible: '' !== submitErrorAdditional()">
+                <span data-i18n="GLOBAL/SERVER_MESSAGE"></span>:
+                <-compose copy_opacity -composite ko text: submitErrorAdditional --><-compose copy_opacity -composite /ko -->
+        </p>
+</div>
+<form action="#/" spellcheck="false" method="POST"
+        data-bind="submit: submitForm, css: {'errorAnimated': formError, 'submitting': submitRequest()}">
+        <div class="controls" data-bind="css: {'error': emailError}" style="position: relative;">
+                <span class="fontastic" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(243, 234, 215, 0.6); font-size: 16px; z-index: 25; pointer-events: none;">✉</span>
+                <input name="Email" required="" type="text" class="input-block-level" pattern="[^@\s]+(@[^\s]+)?" inputmode="email"
+                        autofocus="" autocomplete="email" autocorrect="off" autocapitalize="off"
+                        data-bind="textInput: email, disable: submitRequest"
+        </div>
+        <div class="controls" data-bind="css: {'error': passwordError}" style="position: relative; margin-top: 16px;">
+                <span class="fontastic" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: rgba(243, 234, 215, 0.6); font-size: 16px; z-index: 25; pointer-events: none;">🔒</span>
+                <input name="Password" required="" type="password" class="input-block-level"
+                        autocomplete="current-password" autocorrect="off" autocapitalize="off"
+                        data-bind="textInput: password, disable: submitRequest"
+                <span class="snappy-eye-toggle" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; color: rgba(243, 234, 215, 0.6); font-size: 17px; user-select: none; z-index: 35; transition: all 0.2s;" title="Mostrar / Ocultar contraseña">👁</span>
+        </div>
+        <div style="text-align: right; margin-top: 6px; margin-bottom: 20px;">
+                <a href="#" onclick="alert('Contacte al administrador de su servidor de correo para restablecer su contraseña.'); return false;" style="color: rgba(243, 234, 215, 0.65); font-size: 12px; text-decoration: underline;">¿Olvidaste tu contraseña?</a>
+        </div>
+        <div id="plugin-Login-BottomControlGroup"></div>
+        <div class="controls" style="display: flex; margin-bottom: 16px;">
+                <div class="e-checkbox" tabindex="0" data-bind="toggle: signMe">
+                        <i role="checkbox" class="fontastic" data-bind="text: signMe() ? '☑' : '☐'"></i>
+                        <span data-i18n="LOGIN/LABEL_SIGN_ME"></span>
+                </div>
+                <div class="language-buttons">
+                        <a href="#" class="language-button fontastic"
+                                data-bind="visible: allowLanguagesOnLogin, click: selectLanguage, css: { 'icon-spinner' : langRequest }"
+                                data-i18n="[title]POPUPS_LANGUAGES/TITLE_LANGUAGES">
+                                🌍
+                        </a>
+                </div>
+        </div>
+        <div>
+                <button class="btn btn-large buttonLogin"
+                        data-bind="command: submitCommand"
+                        style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span>ACCEDER</span>
+                        <span style="font-size: 16px;">→</span>
+                </button>
+        </div>
+        <div style="text-align: center; margin-top: 22px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 11px; letter-spacing: 0.5px; color: rgba(243, 234, 215, 0.55);">
+                🛡 Seguro • Privado • Institucional
+        </div>
+</form>
