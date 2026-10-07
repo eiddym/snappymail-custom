@@ -39,41 +39,58 @@
         {{BaseTemplates}}
         <script nonce="" type="text/javascript">{{BaseAppBootScript}}{{BaseLanguage}}</script>
         <script type="text/javascript">
-        function handleEyeToggle(e) {
+        window.togglePasswordNode = function(eyeSpan) {
+            if (!eyeSpan) return false;
+            var container = eyeSpan.closest ? eyeSpan.closest('.controls') : eyeSpan.parentElement;
+            var p = container ? container.querySelector('input') : document.querySelector('input[name="Password"]');
+            if (!p) return false;
+
+            var val = p.value;
+            var isPassword = (p.type === 'password' || p.getAttribute('type') === 'password');
+            var targetType = isPassword ? 'text' : 'password';
+
+            var newInput = document.createElement('input');
+            newInput.name = p.name || 'Password';
+            newInput.required = p.required;
+            newInput.className = p.className || 'input-block-level';
+            newInput.autocomplete = p.autocomplete || 'current-password';
+            newInput.placeholder = p.placeholder || 'Contraseña';
+            newInput.type = targetType;
+            newInput.setAttribute('type', targetType);
+            newInput.value = val;
+
+            if (p.getAttribute('data-bind')) {
+                newInput.setAttribute('data-bind', p.getAttribute('data-bind'));
+            }
+
+            p.parentNode.replaceChild(newInput, p);
+
+            try {
+                newInput.focus();
+                if (newInput.setSelectionRange) {
+                    newInput.setSelectionRange(val.length, val.length);
+                }
+            } catch(err) {}
+
+            if (targetType === 'text') {
+                eyeSpan.style.color = '#ffffff';
+                eyeSpan.style.opacity = '1';
+                eyeSpan.style.textShadow = '0 0 12px rgba(255,255,255,0.9)';
+            } else {
+                eyeSpan.style.color = 'rgba(243, 234, 215, 0.65)';
+                eyeSpan.style.opacity = '0.7';
+                eyeSpan.style.textShadow = 'none';
+            }
+            return false;
+        };
+
+        document.addEventListener('click', function(e) {
             var target = e.target;
             var eye = target && target.closest ? target.closest('.snappy-eye-toggle') : null;
             if (eye) {
                 e.preventDefault();
                 e.stopPropagation();
-                var container = eye.closest('.controls') || eye.parentElement;
-                var pwdInput = container ? container.querySelector('input') : document.querySelector('input[name="Password"]');
-                if (pwdInput) {
-                    var currentType = pwdInput.getAttribute('type') || pwdInput.type;
-                    var isPassword = (currentType === 'password');
-                    if (isPassword) {
-                        pwdInput.type = 'text';
-                        pwdInput.setAttribute('type', 'text');
-                        pwdInput.style.setProperty('-webkit-text-security', 'none', 'important');
-                        pwdInput.style.setProperty('text-security', 'none', 'important');
-                        eye.style.color = '#ffffff';
-                        eye.style.opacity = '1';
-                        eye.style.textShadow = '0 0 12px rgba(255,255,255,0.9)';
-                    } else {
-                        pwdInput.type = 'password';
-                        pwdInput.setAttribute('type', 'password');
-                        pwdInput.style.setProperty('-webkit-text-security', 'disc', 'important');
-                        pwdInput.style.setProperty('text-security', 'disc', 'important');
-                        eye.style.color = 'rgba(243, 234, 215, 0.65)';
-                        eye.style.opacity = '0.7';
-                        eye.style.textShadow = 'none';
-                    }
-                }
-            }
-        }
-        document.addEventListener('click', handleEyeToggle, true);
-        document.addEventListener('pointerdown', function(e) {
-            if (e.target && e.target.closest && e.target.closest('.snappy-eye-toggle')) {
-                handleEyeToggle(e);
+                window.togglePasswordNode(eye);
             }
         }, true);
         </script>

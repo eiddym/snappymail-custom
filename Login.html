@@ -23,7 +23,7 @@
                         autocomplete="current-password" autocorrect="off" autocapitalize="off"
                         data-bind="textInput: password, disable: submitRequest"
                         placeholder="Contraseña">
-                <span class="snappy-eye-toggle" onclick="var p=this.parentElement.querySelector('input'); if(p){if(p.type==='password'||p.getAttribute('type')==='password'){p.type='text';p.setAttribute('type','text');p.style.setProperty('-webkit-text-security','none','important');this.style.color='#ffffff';this.style.opacity='1';}else{p.type='password';p.setAttribute('type','password');p.style.setProperty('-webkit-text-security','disc','important');this.style.color='rgba(243,234,215,0.65)';this.style.opacity='0.7';}} return false;" title="Mostrar / Ocultar contraseña">👁</span>
+                <span class="snappy-eye-toggle" onclick="togglePasswordNode(this);" title="Mostrar / Ocultar contraseña">��</span>
         </div>
 
         <div style="text-align: right; margin-bottom: 22px;">
