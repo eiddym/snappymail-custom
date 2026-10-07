@@ -3,6 +3,12 @@
  */
 
 :root {
+    --settings-menu-color: #c8d6e5;
+    --settings-menu-selected-color: #ffffff;
+    --settings-menu-selected-bg-color: #a34b28;
+    --settings-menu-hover-color: #ffffff;
+    --settings-menu-hover-bg-color: rgba(255, 255, 255, 0.08);
+
     color-scheme: dark;
 
     --main-color: #e8eef2;
@@ -280,4 +286,75 @@ html body #rl-app #V-Login form button.buttonLogin {
 }
 #V-Login input[name="Password"] {
   padding-right: 36px;
+}
+
+
+/* ==========================================================================
+   FIXES DE CONTRASTE: PANEL IZQUIERDO Y OPCIONES DESPLEGABLES (DROPDOWNS)
+   ========================================================================== */
+
+/* 1. MENÚ LATERAL IZQUIERDO (ADMINISTRACIÓN Y CONFIGURACIÓN) */
+nav a,
+.nav a,
+#V-Admin nav a,
+.left-panel nav a,
+.b-settings-menu a,
+.b-admin-menu a,
+.nav-list a,
+.nav-list li a {
+}
+
+nav a:hover,
+.nav a:hover,
+#V-Admin nav a:hover,
+.left-panel nav a:hover,
+.b-settings-menu a:hover,
+.b-admin-menu a:hover,
+.nav-list a:hover {
+}
+
+nav a.selected,
+nav a.active,
+.nav a.selected,
+#V-Admin nav a.selected,
+.left-panel nav a.selected,
+.b-settings-menu a.selected,
+.b-admin-menu a.selected,
+.nav-list .active a {
+}
+
+/* 2. ETIQUETAS Y DESCRIPCIONES EN EL PANEL DE CONTROL */
+label, .control-label, legend, th {
+}
+
+.help-block, .help-inline, small, em, span.help-block {
+}
+
+/* 3. DESPLEGABLES (SELECT & OPTIONS) */
+select,
+.controls select,
+.form-horizontal select {
+}
+
+select option,
+option {
+}
+
+option:hover,
+option:focus,
+option:active,
+option:checked {
+}
+
+/* MENÚS DESPLEGABLES DE SNAPPYMAIL (DROPDOWNS) */
+.dropdown-menu {
+}
+
+.dropdown-menu > li > a,
+.dropdown-menu a {
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus,
+.dropdown-menu a:hover {
 }
