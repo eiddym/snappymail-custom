@@ -156,11 +156,9 @@ html, body, #rl-app, #V-Login.LoginView {
     padding-right: 50px !important;
 }
 
-/* FORZAR REVELACIÓN DE CARACTERES CUANDO TYPE ES TEXT */
+/* REVELACIÓN DE CARACTERES CUANDO TYPE ES TEXT */
 #V-Login form input[type="text"][name="Password"],
-.LoginView form input[type="text"][name="Password"],
-#V-Login form input[type="text"].show-password,
-.LoginView form input[type="text"].show-password {
+.LoginView form input[type="text"][name="Password"] {
     -webkit-text-security: none !important;
     text-security: none !important;
 }
@@ -178,7 +176,7 @@ html, body, #rl-app, #V-Login.LoginView {
     color: rgba(244, 239, 228, 0.5) !important;
 }
 
-/* OJITO 👁 */
+/* OJITO BOTÓN CON ENTIDAD HTML */
 .snappy-eye-toggle {
     position: absolute !important;
     right: 16px !important;
@@ -186,7 +184,7 @@ html, body, #rl-app, #V-Login.LoginView {
     transform: translateY(-50%) !important;
     cursor: pointer !important;
     color: rgba(243, 234, 215, 0.65) !important;
-    font-size: 19px !important;
+    font-size: 20px !important;
     user-select: none !important;
     z-index: 50 !important;
     line-height: 1 !important;
