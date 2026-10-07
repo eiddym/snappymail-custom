@@ -1,5 +1,5 @@
 /**
- * SnappyMail Custom Theme: Marabunta Dark Glass
+ * SnappyMail Custom Theme: Marabunta Dark Glass (Fullscreen Uniform Grid)
  */
 
 :root {
@@ -53,39 +53,60 @@
     --dialog-border-clr: rgba(255, 255, 255, 0.15);
 }
 
-/* FONDO PRINCIPAL */
-html, body, #rl-app, #V-Login.LoginView {
-    min-height: 100vh;
+/* FONDO PRINCIPAL EN TODA LA PÁGINA (SIN SECCIONES VERTICALES) */
+html, body, #rl-app, #rl-content {
+    width: 100% !important;
+    min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background-color: #07141c !important;
     background-image:
-        radial-gradient(900px 550px at 16% 74%, rgba(196,146,74,.22), transparent 62%),
-        radial-gradient(750px 480px at 86% 12%, rgba(61,142,168,.28), transparent 64%),
+        radial-gradient(1200px 750px at 16% 74%, rgba(196,146,74,.22), transparent 65%),
+        radial-gradient(1000px 650px at 86% 12%, rgba(61,142,168,.28), transparent 65%),
         linear-gradient(165deg, #122838 0%, #07141c 46%, #143246 100%) !important;
     background-attachment: fixed !important;
 }
 
-/* MALLA DE FONDO */
-#V-Login.LoginView::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
+/* PATRÓN DE CUADROS CONTINUO EN TODA LA PANTALLA (REPETIDO DE BORDE A BORDE) */
+body::before, #rl-app::before {
+    content: "" !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
     background-image:
-        linear-gradient(rgba(244,239,228,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(244,239,228,.035) 1px, transparent 1px);
-    background-size: 52px 52px;
-    mask-image: radial-gradient(ellipse at center, #000 30%, transparent 78%);
+        linear-gradient(rgba(244,239,228,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(244,239,228,.04) 1px, transparent 1px) !important;
+    background-size: 52px 52px !important;
+    background-repeat: repeat !important;
 }
 
-#V-Login.LoginView {
+/* ELIMINAR CUALQUIER ANCHO O DIVISIONES EN EL VISTA DE LOGIN */
+#V-Login, #V-Login.LoginView {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    background: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border: none !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 35px 20px !important;
+    padding: 40px 20px !important;
+    position: relative !important;
+    z-index: 1 !important;
 }
 
-/* TÍTULO WEBMAIL MARABUNTA */
+#V-Login::before, #V-Login.LoginView::before {
+    display: none !important;
+}
+
+/* TÍTULO WEBMAIL MARABUNTA CON SUBRAYADO GOLD */
 #V-Login .descWrapper,
 .LoginView .descWrapper {
     display: block !important;
@@ -120,7 +141,7 @@ html, body, #rl-app, #V-Login.LoginView {
     padding: 0 !important;
 }
 
-/* TARJETA DE FORMULARIO (410PX) */
+/* TARJETA DE FORMULARIO GLASSMORPHISM (410PX) */
 #V-Login form,
 .LoginView form {
     width: 410px !important;
@@ -135,7 +156,7 @@ html, body, #rl-app, #V-Login.LoginView {
     box-sizing: border-box !important;
 }
 
-/* INPUTS ESPACIOSOS */
+/* INPUTS ESPACIOSOS Y LIMPIOS */
 #V-Login form input.input-block-level,
 .LoginView form input.input-block-level {
     width: 100% !important;
@@ -156,7 +177,6 @@ html, body, #rl-app, #V-Login.LoginView {
     padding-right: 50px !important;
 }
 
-/* REVELACIÓN DE CARACTERES CUANDO TYPE ES TEXT */
 #V-Login form input[type="text"][name="Password"],
 .LoginView form input[type="text"][name="Password"] {
     -webkit-text-security: none !important;
@@ -176,7 +196,7 @@ html, body, #rl-app, #V-Login.LoginView {
     color: rgba(244, 239, 228, 0.5) !important;
 }
 
-/* OJITO BOTÓN CON ENTIDAD HTML */
+/* OJITO BOTÓN 👁 */
 .snappy-eye-toggle {
     position: absolute !important;
     right: 16px !important;
@@ -200,7 +220,7 @@ html, body, #rl-app, #V-Login.LoginView {
     display: none !important;
 }
 
-/* BOTÓN ACCEDER TERRACOTA */
+/* BOTÓN ACCEDER TERRACOTA MARABUNTA */
 #V-Login form button.buttonLogin,
 .LoginView form button.buttonLogin,
 html body #rl-app #V-Login form button.buttonLogin {
