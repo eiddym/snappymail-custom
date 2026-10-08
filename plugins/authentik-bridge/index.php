@@ -2,7 +2,7 @@
 class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
 {
     const NAME = 'Authentik Bridge';
-    const VERSION = '0.1.0';
+    const VERSION = '0.1.1';
     const REQUIRED = '2.36.0';
     const CATEGORY = 'Auth';
     const DESCRIPTION = 'Authenticates against Authentik LDAP Outpost and maps Hostinger IMAP credentials';
@@ -15,20 +15,24 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
 
     public function ValidateAuthentik(&$sNewEmail, &$sPassword): void
     {
-        $user = \strtolower(\trim($sNewEmail));
-        $local = \explode('@', $user)[0];
+        $input = \strtolower(\trim($sNewEmail));
+        $local = \explode('@', $input)[0];
 
         if (empty($local) || empty($sPassword)) {
-            $this->WriteLog('AuthentikBridge: Empty username or password provided', \LOG_WARNING);
-            throw new \RainLoop\Exceptions\ClientException(\RainLoop\Notifications::AuthFailed);
+            $this->writeLog('AuthentikBridge: Empty username or password provided');
+            throw new \RainLoop\Exceptions\ClientException(\RainLoop\Notifications::AuthError);
         }
+
+        // Automatic domain completion if user typed short username (e.g. "ariel.ayaviri")
+        $fullEmail = \str_contains($input, '@') ? $input : $local . '@marabuntarl.com';
+        $sNewEmail = $fullEmail;
 
         $ldapHost = \getenv('AUTHENTIK_LDAP_HOST') ?: 'ldap://authentik-ldap-outpost:3389';
         $baseDn = \getenv('AUTHENTIK_LDAP_BASE_DN') ?: 'ou=users,dc=marabuntarl,dc=com';
 
         $ds = @\ldap_connect($ldapHost);
         if (!$ds) {
-            $this->WriteLog("AuthentikBridge: Could not connect to LDAP server at {$ldapHost}", \LOG_ERR);
+            $this->writeLog("AuthentikBridge: Could not connect to LDAP server at {$ldapHost}");
             throw new \RainLoop\Exceptions\ClientException(\RainLoop\Notifications::ServiceUnavailable);
         }
 
@@ -39,27 +43,31 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
         $bind = @\ldap_bind($ds, $dn, $sPassword);
 
         if (!$bind) {
-            $this->WriteLog("AuthentikBridge: LDAP bind failed for DN {$dn}", \LOG_NOTICE);
-            throw new \RainLoop\Exceptions\ClientException(\RainLoop\Notifications::AuthFailed);
+            $this->writeLog("AuthentikBridge: LDAP bind failed for DN {$dn}");
+            throw new \RainLoop\Exceptions\ClientException(\RainLoop\Notifications::AuthError);
         }
 
-        $this->WriteLog("AuthentikBridge: LDAP bind successful for {$user}", \LOG_INFO);
+        $this->writeLog("AuthentikBridge: LDAP bind successful for {$fullEmail}");
     }
 
     public function InjectHostingerPassword(&$sNewEmail, &$sNewImapUser, &$sPassword, &$sNewSmtpUser): void
     {
-        $user = \strtolower(\trim($sNewEmail));
-        $realPassword = $this->getHostingerPassword($user);
+        $input = \strtolower(\trim($sNewEmail));
+        $local = \explode('@', $input)[0];
+        $fullEmail = \str_contains($input, '@') ? $input : $local . '@marabuntarl.com';
+        $sNewEmail = $fullEmail;
+
+        $realPassword = $this->getHostingerPassword($fullEmail);
 
         if (empty($realPassword)) {
-            $this->WriteLog("AuthentikBridge: No Hostinger credential found for {$user}", \LOG_ERR);
-            throw new \RainLoop\Exceptions\ClientException(\RainLoop\Notifications::AuthFailed);
+            $this->writeLog("AuthentikBridge: No Hostinger credential found for {$fullEmail}");
+            throw new \RainLoop\Exceptions\ClientException(\RainLoop\Notifications::AuthError);
         }
 
         $sPassword = $realPassword;
-        $sNewImapUser = $user;
-        $sNewSmtpUser = $user;
-        $this->WriteLog("AuthentikBridge: Successfully injected Hostinger password for {$user}", \LOG_INFO);
+        $sNewImapUser = $fullEmail;
+        $sNewSmtpUser = $fullEmail;
+        $this->writeLog("AuthentikBridge: Successfully injected Hostinger password for {$fullEmail}");
     }
 
     private function getHostingerPassword(string $email): string
@@ -78,7 +86,7 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
         $masterKeyB64 = \getenv('CREDENTIAL_MASTER_KEY') ?: 'aOFx40L6HDvy4GfRdAjkVvtOa6Ph7W1s776oMRm0DA8=';
         $masterKey = \base64_decode($masterKeyB64);
         if (\strlen($masterKey) !== SODIUM_CRYPTO_SECRETBOX_KEYBYTES) {
-            $this->WriteLog('AuthentikBridge: Invalid master key length', \LOG_ERR);
+            $this->writeLog('AuthentikBridge: Invalid master key length');
             return '';
         }
 
@@ -93,5 +101,16 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
 
         $decrypted = \sodium_crypto_secretbox_open($ciphertext, $nonce, $masterKey);
         return $decrypted !== false ? $decrypted : '';
+    }
+
+    private function writeLog(string $message): void
+    {
+        try {
+            if (\class_exists('\RainLoop\Api') && \RainLoop\Api::Actions() && \RainLoop\Api::Actions()->Logger()) {
+                \RainLoop\Api::Actions()->Logger()->WriteLog($message);
+            }
+        } catch (\Throwable $e) {
+            // Ignore logging errors
+        }
     }
 }
