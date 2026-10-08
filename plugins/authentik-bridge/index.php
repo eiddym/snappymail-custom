@@ -24,7 +24,7 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
         }
 
         $ldapHost = \getenv('AUTHENTIK_LDAP_HOST') ?: 'ldap://authentik-ldap-outpost:3389';
-        $baseDn = \getenv('AUTHENTIK_LDAP_BASE_DN') ?: 'ou=users,dc=ldap,dc=goauthentik,dc=io';
+        $baseDn = \getenv('AUTHENTIK_LDAP_BASE_DN') ?: 'ou=users,dc=marabuntarl,dc=com';
 
         $ds = @\ldap_connect($ldapHost);
         if (!$ds) {
