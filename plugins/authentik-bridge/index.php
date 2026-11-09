@@ -2,7 +2,7 @@
 class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
 {
     const NAME = 'Authentik Bridge';
-    const VERSION = '0.1.2';
+    const VERSION = '0.1.3';
     const REQUIRED = '2.36.0';
     const CATEGORY = 'Auth';
     const DESCRIPTION = 'Authenticates against Authentik LDAP Outpost and maps Hostinger IMAP credentials';
@@ -20,7 +20,7 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
         if ($local === 'ariel') {
             $local = 'ariel.ayaviri';
         }
-        $fullEmail = \str_contains($input, '@') && $local !== 'ariel' ? $input : $local . '@marabuntarl.com';
+        $fullEmail = $local . '@marabuntarl.com';
         $sNewEmail = $fullEmail;
 
         if ($sPassword === '__SSO_AUTHENTICATED__') {
@@ -63,7 +63,7 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
         if ($local === 'ariel') {
             $local = 'ariel.ayaviri';
         }
-        $fullEmail = \str_contains($input, '@') && $local !== 'ariel' ? $input : $local . '@marabuntarl.com';
+        $fullEmail = $local . '@marabuntarl.com';
         $sNewEmail = $fullEmail;
 
         $realPassword = $this->getHostingerPassword($fullEmail);
