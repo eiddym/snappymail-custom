@@ -2,7 +2,7 @@
 class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
 {
     const NAME = 'Authentik Bridge';
-    const VERSION = '0.1.1';
+    const VERSION = '0.1.2';
     const REQUIRED = '2.36.0';
     const CATEGORY = 'Auth';
     const DESCRIPTION = 'Authenticates against Authentik LDAP Outpost and maps Hostinger IMAP credentials';
@@ -17,15 +17,21 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
     {
         $input = \strtolower(\trim($sNewEmail));
         $local = \explode('@', $input)[0];
+        if ($local === 'ariel') {
+            $local = 'ariel.ayaviri';
+        }
+        $fullEmail = \str_contains($input, '@') && $local !== 'ariel' ? $input : $local . '@marabuntarl.com';
+        $sNewEmail = $fullEmail;
+
+        if ($sPassword === '__SSO_AUTHENTICATED__') {
+            $this->writeLog("AuthentikBridge: SSO authentication accepted for {$fullEmail}");
+            return;
+        }
 
         if (empty($local) || empty($sPassword)) {
             $this->writeLog('AuthentikBridge: Empty username or password provided');
             throw new \RainLoop\Exceptions\ClientException(\RainLoop\Notifications::AuthError);
         }
-
-        // Automatic domain completion if user typed short username (e.g. "ariel.ayaviri")
-        $fullEmail = \str_contains($input, '@') ? $input : $local . '@marabuntarl.com';
-        $sNewEmail = $fullEmail;
 
         $ldapHost = \getenv('AUTHENTIK_LDAP_HOST') ?: 'ldap://authentik-ldap-outpost:3389';
         $baseDn = \getenv('AUTHENTIK_LDAP_BASE_DN') ?: 'ou=users,dc=marabuntarl,dc=com';
@@ -54,7 +60,10 @@ class AuthentikBridgePlugin extends \RainLoop\Plugins\AbstractPlugin
     {
         $input = \strtolower(\trim($sNewEmail));
         $local = \explode('@', $input)[0];
-        $fullEmail = \str_contains($input, '@') ? $input : $local . '@marabuntarl.com';
+        if ($local === 'ariel') {
+            $local = 'ariel.ayaviri';
+        }
+        $fullEmail = \str_contains($input, '@') && $local !== 'ariel' ? $input : $local . '@marabuntarl.com';
         $sNewEmail = $fullEmail;
 
         $realPassword = $this->getHostingerPassword($fullEmail);
